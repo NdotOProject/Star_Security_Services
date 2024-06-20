@@ -2,7 +2,7 @@
 
 namespace StarSecurityServices.Models
 {
-    public class Branch : IStringId
+    public class Branch : IStringKeyEntity
     {
         public string? Id { get; set; }
 
@@ -12,7 +12,7 @@ namespace StarSecurityServices.Models
 
         public string Email {  get; set; } = string.Empty;
 
-        public Employee ContactPerson { get; set; } = new();
+        public string ContactPerson { get; set; } = string.Empty;
 
         public ICollection<Department> Departments { get; set; } = [];
     }

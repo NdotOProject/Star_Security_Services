@@ -1,8 +1,10 @@
-﻿namespace StarSecurityServices.Models
+﻿using StarSecurityServices.Models.Common;
+
+namespace StarSecurityServices.Models
 {
-    public class Employee
+    public class Employee : IStringKeyEntity
     {
-        public int Id { get; set; }
+        public string? Id { get; set; }
 
         public string Code { get; set; } = string.Empty;
 
@@ -12,14 +14,22 @@
 
         public string ContactNumber { get; set; } = string.Empty;
 
-        public string EducationalQualification { get; set; } = string.Empty;
+        public ICollection<Achievement> Achievements { get; set; } = [];
 
-        public string RoleId { get; set; } = string.Empty;
+        public string DepartmentId { get; set; } = string.Empty;
 
-        public Role Role { get; set; } = new();
+        public Department Department { get; set; } = new();
 
-        public string BranchId {  get; set; } = string.Empty;
+        public string EducationalQualificationId { get; set; } = string.Empty;
 
-        public Branch Branch { get; set; } = new();
+        public EducationalQualification EducationalQualification { get; set; } = new();
+
+        public string GradeId { get; set; } = string.Empty;
+
+        public Grade Grade { get; set; } = new();
+
+        public ICollection<Recruitment> Recruitments { get; set; } = [];
+
+        public ICollection<Role> Roles { get; set; } = [];
     }
 }

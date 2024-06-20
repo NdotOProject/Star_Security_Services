@@ -2,7 +2,7 @@
 
 namespace StarSecurityServices.Models
 {
-    public class Service : IStringId
+    public class Service : IStringKeyEntity
     {
         public string? Id { get; set; }
 
@@ -10,6 +10,6 @@ namespace StarSecurityServices.Models
 
         public string Description { get; set; } = string.Empty;
 
-        public ICollection<Employee> Employees { get; set; } = [];
+        public ICollection<Contract> Contracts { get; set; } = [];
     }
 }

@@ -2,14 +2,16 @@
 
 namespace StarSecurityServices.Models
 {
-    public class Client : IStringId
+    public class Client : IStringKeyEntity
     {
         public string? Id { get; set; }
 
         public string Name { get; set; } = string.Empty;
 
-        public string ServiceId { get; set; } = string.Empty;
+        public string PhoneNumber { get; set; } = string.Empty;
 
-        public Service Service { get; set; } = new();
+        public string Email { get; set; } = string.Empty;
+
+        public ICollection<Contract> Contracts { get; set; } = [];
     }
 }

@@ -1,11 +1,16 @@
 ﻿namespace StarSecurityServices.Models.Common
 {
-    public interface IStringId
+    public interface IStringKeyEntity
     {
         string? Id { get; set; }
 
-        static bool Generate(IStringId obj)
+        static bool Generate(IStringKeyEntity obj)
         {
+            if (obj.Id != null)
+            {
+                return string.IsNullOrWhiteSpace(obj.Id);
+            }
+
             string id = Guid.NewGuid().ToString();
 
             obj.Id = id;
