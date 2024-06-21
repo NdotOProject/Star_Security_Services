@@ -4,25 +4,20 @@ using StarSecurityServices.Models.Configurations.Extensions;
 
 namespace StarSecurityServices.Models.Configurations
 {
-    public class AchievementConfiguration
-        : IEntityTypeConfiguration<Achievement>
+    public class EducationalQualificationProperties
+        : IEntityTypeConfiguration<EducationalQualification>
     {
-        public void Configure(EntityTypeBuilder<Achievement> entity)
+        public void Configure(EntityTypeBuilder<EducationalQualification> entity)
         {
             entity.HasStringKey();
 
             entity.HasStringProperty(
                 e => e.Name,
-                maxLength: 255,
+                maxLength: 100,
                 required: true
             );
 
             entity.HasStringProperty(e => e.Description);
-
-            entity.HasStringPropertyAsForeignKey(e => e.OwnerId)
-                .HasOne(a => a.Owner)
-                .WithMany(emp => emp.Achievements)
-                .HasForeignKey(e => e.OwnerId);
         }
     }
 }

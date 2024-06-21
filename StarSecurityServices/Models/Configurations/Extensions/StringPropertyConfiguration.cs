@@ -9,28 +9,11 @@ namespace StarSecurityServices.Models.Configurations.Extensions
     {
         private const int KEY_LENGTH = 50;
 
-        public static EntityTypeBuilder<T> HasStringKey<T>(
-            this EntityTypeBuilder<T> entity
-        )
-            where T : class, IStringKeyEntity
-        {
-            entity.HasKey(e => e.Id);
-
-            entity.HasStringProperty(
-                e => e.Id,
-                maxLength: KEY_LENGTH,
-                required: true
-            );
-
-            return entity;
-        }
-
         public static EntityTypeBuilder<T> HasStringProperty<T>(
             this EntityTypeBuilder<T> entity,
             Expression<Func<T, string?>> propertyExpression,
             int? maxLength = null,
-            bool required = false
-        )
+            bool required = false)
             where T : class
         {
             var prop = entity.Property(propertyExpression)
@@ -49,13 +32,31 @@ namespace StarSecurityServices.Models.Configurations.Extensions
             return entity;
         }
 
-        public static EntityTypeBuilder<T> HasStringPropertyAsForeignKey<T>(
+        public static EntityTypeBuilder<T> HasStringKey<T>(
+            this EntityTypeBuilder<T> entity)
+            where T : class, IStringKeyEntity
+        {
+            entity.HasKey(e => e.Id);
+
+            entity.HasStringProperty(
+                e => e.Id,
+                maxLength: KEY_LENGTH,
+                required: true
+            );
+
+            return entity;
+        }
+
+        public static EntityTypeBuilder<T> HasStringPropertyIsForeignKey<T>(
             this EntityTypeBuilder<T> entity,
-            Expression<Func<T, string?>> propertyExpression
-        )
+            Expression<Func<T, string?>> propertyExpression)
             where T : class
         {
-            entity.HasStringProperty(propertyExpression, KEY_LENGTH, required: true);
+            entity.HasStringProperty(
+                propertyExpression,
+                maxLength: KEY_LENGTH,
+                required: true
+            );
 
             return entity;
         }

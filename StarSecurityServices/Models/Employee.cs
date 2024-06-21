@@ -16,6 +16,8 @@ namespace StarSecurityServices.Models
 
         public ICollection<Achievement> Achievements { get; set; } = [];
 
+        public ICollection<Contract> Contracts { get; set; } = [];
+
         public string DepartmentId { get; set; } = string.Empty;
 
         public Department Department { get; set; } = new();
