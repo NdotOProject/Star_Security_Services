@@ -9,17 +9,25 @@ namespace StarSecurityServices.Models.Configurations
     {
         public void Configure(EntityTypeBuilder<Achievement> entity)
         {
+            // Id
             entity.HasStringKey();
 
+            // Description
+            entity.HasStringProperty(
+                e => e.Description
+            );
+
+            // Name
             entity.HasStringProperty(
                 e => e.Name,
                 maxLength: 100,
                 required: true
             );
 
-            entity.HasStringProperty(e => e.Description);
-
-            entity.HasStringPropertyIsForeignKey(e => e.OwnerId);
+            // OwnerId
+            entity.HasStringPropertyIsForeignKey(
+                e => e.OwnerId
+            );
         }
     }
 }

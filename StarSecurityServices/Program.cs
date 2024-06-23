@@ -3,8 +3,18 @@ using StarSecurityServices.Context;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+builder.Services.AddOptions();
 
+builder.Services.AddSingleton(builder.Configuration);
+
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+builder.Services.AddHttpContextAccessor();
+/*
+builder.Services.AddSingleton(
+    new ApplicationDbContextFactory(builder.Configuration)
+);
+*/
 builder.Services.AddDbContext<ApplicationDbContext>(
     options => options.UseSqlServer(
         builder.Configuration.GetConnectionString("Default")
@@ -12,15 +22,21 @@ builder.Services.AddDbContext<ApplicationDbContext>(
 );
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
 builder.Services.AddEndpointsApiExplorer();
+
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
+    using (var serviceScope = app.Services?.GetService<IServiceScopeFactory>()?.CreateScope())
+    {
+        var context = serviceScope?.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+        context?.Database.EnsureCreated();
+    }
+
     app.UseSwagger();
     app.UseSwaggerUI();
 }

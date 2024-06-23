@@ -4,31 +4,34 @@ using StarSecurityServices.Models.Configurations.Extensions;
 
 namespace StarSecurityServices.Models.Configurations
 {
-    public class ClientProperties
-        : IEntityTypeConfiguration<Client>
+    public class RecruitmentProperties
+        : IEntityTypeConfiguration<Recruitment>
     {
-        public void Configure(EntityTypeBuilder<Client> entity)
+        public void Configure(EntityTypeBuilder<Recruitment> entity)
         {
             // Id
             entity.HasStringKey();
 
-            // Name
+            // Description
             entity.HasStringProperty(
-                e => e.Name,
+                e => e.Description
+            );
+
+            // ManagerId
+            entity.HasStringPropertyIsForeignKey(
+                e => e.ManagerId
+            );
+
+            // Title
+            entity.HasStringProperty(
+                e => e.Title,
                 maxLength: 100,
                 required: true
             );
 
-            // PhoneNumber
+            // Vacancies
             entity.HasStringProperty(
-                e => e.PhoneNumber,
-                maxLength: 15,
-                required: true
-            );
-
-            // Email
-            entity.HasStringProperty(
-                e => e.Email,
+                e => e.Vacancies,
                 maxLength: 255,
                 required: true
             );

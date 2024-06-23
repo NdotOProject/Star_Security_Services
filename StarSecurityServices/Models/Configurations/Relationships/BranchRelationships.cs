@@ -4,13 +4,14 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 namespace StarSecurityServices.Models.Configurations.Relationships
 {
     public class BranchRelationships
-        : IEntityTypeConfiguration<Department>
+        : IEntityTypeConfiguration<Branch>
     {
-        public void Configure(EntityTypeBuilder<Department> entity)
+        public void Configure(EntityTypeBuilder<Branch> entity)
         {
-            entity.HasOne(e => e.Branch)
-                .WithMany(b => b.Departments)
-                .HasForeignKey(e => e.BranchId);
+            // Branch - Department
+            entity.HasMany(b => b.Departments)
+                .WithOne(d => d.Branch)
+                .HasForeignKey(d => d.BranchId);
         }
     }
 }

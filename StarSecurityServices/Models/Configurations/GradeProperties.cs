@@ -4,18 +4,13 @@ using StarSecurityServices.Models.Configurations.Extensions;
 
 namespace StarSecurityServices.Models.Configurations
 {
-    public class DepartmentProperties
-        : IEntityTypeConfiguration<Department>
+    public class GradeProperties
+        : IEntityTypeConfiguration<Grade>
     {
-        public void Configure(EntityTypeBuilder<Department> entity)
+        public void Configure(EntityTypeBuilder<Grade> entity)
         {
             // Id
             entity.HasStringKey();
-
-            // BranchId
-            entity.HasStringPropertyIsForeignKey(
-                e => e.BranchId
-            );
 
             // Description
             entity.HasStringProperty(

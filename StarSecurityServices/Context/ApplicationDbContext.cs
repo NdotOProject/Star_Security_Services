@@ -31,15 +31,17 @@ namespace StarSecurityServices.Context
         public DbSet<Service> Services { get; set; }
         #endregion
 
+        public ApplicationDbContext() { }
+
         public ApplicationDbContext(DbContextOptions options) : base(options)
         {
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder);
-
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+
+            base.OnModelCreating(modelBuilder);
         }
 
         public async Task<int> SaveChangeAsync()

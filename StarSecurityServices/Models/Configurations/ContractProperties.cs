@@ -9,9 +9,13 @@ namespace StarSecurityServices.Models.Configurations
     {
         public void Configure(EntityTypeBuilder<Contract> entity)
         {
+            // Id
             entity.HasStringKey();
 
-            entity.HasStringPropertyIsForeignKey(e => e.ClientId);
+            // ClientId
+            entity.HasStringPropertyIsForeignKey(
+                e => e.ClientId
+            );
         }
     }
 }
