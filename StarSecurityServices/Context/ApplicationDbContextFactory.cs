@@ -20,6 +20,7 @@ namespace StarSecurityServices.Context
             DbContextOptionsBuilder<ApplicationDbContext> optionBuilder = new();
 
             optionBuilder.UseSqlServer(
+                //"Server=DESKTOP-JO6DIGF\\SQLEXPRESS;Database=StarSecurityServices;TrustServerCertificate=True;Trusted_Connection=True;User Id=sa;Password=12345678;"
                 configuration.GetConnectionString("Default")
             );
 

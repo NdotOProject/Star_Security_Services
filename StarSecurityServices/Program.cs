@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using StarSecurityServices.Context;
+using StarSecurityServices.DTOs;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,16 +11,18 @@ builder.Services.AddSingleton(builder.Configuration);
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
 builder.Services.AddHttpContextAccessor();
-/*
-builder.Services.AddSingleton(
-    new ApplicationDbContextFactory(builder.Configuration)
-);
-*/
+
 builder.Services.AddDbContext<ApplicationDbContext>(
     options => options.UseSqlServer(
         builder.Configuration.GetConnectionString("Default")
     )
 );
+
+builder.Services.AddSingleton(sp => {
+    var dbContext = sp.GetRequiredService<ApplicationDbContext>();
+
+    return new Mappers(dbContext);
+});
 
 builder.Services.AddControllers();
 

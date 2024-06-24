@@ -54,6 +54,13 @@ namespace StarSecurityServices.Models.Configurations
                 maxLength: 100,
                 required: true
             );
+
+            // Password
+            entity.HasStringProperty(
+                e => e.Password,
+                maxLength: 100,
+                required: true
+            );
         }
     }
 }
