@@ -18,11 +18,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(
     )
 );
 
-builder.Services.AddSingleton(sp => {
-    var dbContext = sp.GetRequiredService<ApplicationDbContext>();
-
-    return new Mappers(dbContext);
-});
+builder.Services.AddScoped<Mappers>();
 
 builder.Services.AddControllers();
 

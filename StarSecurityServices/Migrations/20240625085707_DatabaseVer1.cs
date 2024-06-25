@@ -140,7 +140,8 @@ namespace StarSecurityServices.Migrations
                     DepartmentId = table.Column<string>(type: "NVARCHAR(50)", maxLength: 50, nullable: false),
                     EducationalQualificationId = table.Column<string>(type: "NVARCHAR(50)", maxLength: 50, nullable: false),
                     GradeId = table.Column<string>(type: "NVARCHAR(50)", maxLength: 50, nullable: false),
-                    Name = table.Column<string>(type: "NVARCHAR(100)", maxLength: 100, nullable: false)
+                    Name = table.Column<string>(type: "NVARCHAR(100)", maxLength: 100, nullable: false),
+                    Password = table.Column<string>(type: "NVARCHAR(100)", maxLength: 100, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -307,6 +308,12 @@ namespace StarSecurityServices.Migrations
                 name: "IX_EmployeeRoles_RoleId",
                 table: "EmployeeRoles",
                 column: "RoleId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Employees_Code",
+                table: "Employees",
+                column: "Code",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Employees_DepartmentId",

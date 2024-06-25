@@ -260,6 +260,9 @@ namespace StarSecurityServices.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Code")
+                        .IsUnique();
+
                     b.HasIndex("DepartmentId");
 
                     b.HasIndex("EducationalQualificationId");

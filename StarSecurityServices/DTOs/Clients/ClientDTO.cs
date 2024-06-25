@@ -13,8 +13,9 @@ namespace StarSecurityServices.DTOs.Clients
         public string PhoneNumber { get; set; } = string.Empty;
 
         public class Mapper
+            : AbstractMapper<Client, ClientDTO>
         {
-            public ClientDTO Map(Client client)
+            public override ClientDTO Map(Client client)
             {
                 return new ClientDTO
                 {

@@ -11,8 +11,8 @@ using StarSecurityServices.Context;
 namespace StarSecurityServices.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240624111500_DatabaseVer2")]
-    partial class DatabaseVer2
+    [Migration("20240625085707_DatabaseVer1")]
+    partial class DatabaseVer1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -262,6 +262,9 @@ namespace StarSecurityServices.Migrations
                         .HasColumnType("NVARCHAR");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Code")
+                        .IsUnique();
 
                     b.HasIndex("DepartmentId");
 

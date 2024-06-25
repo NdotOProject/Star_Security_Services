@@ -24,10 +24,7 @@ namespace StarSecurityServices.DTOs.Employees
 
         public string Name { get; set; } = string.Empty;
 
-        public class Mapper(
-            DepartmentDTO.Mapper departmentDTOMapper,
-            EducationalQualificationDTO.Mapper edDTOMapper,
-            GradeDTO.Mapper gradeDTOMapper)
+        public class Mapper(Mappers mappers)
         {
             public EmployeeDTO Map(Employee employee)
             {
@@ -37,11 +34,16 @@ namespace StarSecurityServices.DTOs.Employees
                     Address = employee.Address,
                     Code = employee.Code,
                     ContactNumber = employee.ContactNumber,
-                    Department = departmentDTOMapper.Map(employee.Department),
-                    EducationalQualification = edDTOMapper.Map(
-                        employee.EducationalQualification
+                    Department = mappers.DepartmentDTOMapper.Map(
+                        employee.Department
                     ),
-                    Grade = gradeDTOMapper.Map(employee.Grade),
+                    EducationalQualification = mappers
+                        .EducationalQualificationDTOMapper.Map(
+                            employee.EducationalQualification
+                    ),
+                    Grade = mappers.GradeDTOMapper.Map(
+                        employee.Grade
+                    ),
                     Name = employee.Name,
                 };
             }

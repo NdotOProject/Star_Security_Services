@@ -9,23 +9,10 @@ namespace StarSecurityServices.Controllers
 {
     [ApiController]
     [Route("api/employees")]
-    public class EmployeeController : ControllerBase
+    public class EmployeeController(
+            ApplicationDbContext dbContext,
+            Mappers mappers) : ControllerBase
     {
-        private readonly ApplicationDbContext _dbContext;
-
-        private EmployeeDTO.Mapper EmployeeDTOMapper { get; }
-
-        private CreateEmployeeDTO.Mapper CreateEmployeeRequestMapper { get; }
-
-        private DbSet<Employee> Employees => _dbContext.Employees;
-
-        public EmployeeController(ApplicationDbContext dbContext, Mappers mappers)
-        {
-            _dbContext = dbContext;
-            EmployeeDTOMapper = mappers.EmployeeDTOMapper;
-            CreateEmployeeRequestMapper = mappers.CreateEmployeeDTOMapper;
-        }
-
         [HttpGet]
         public async Task<ActionResult<IEnumerable<EmployeeDTO>>>
             GetEmployees(
@@ -33,8 +20,6 @@ namespace StarSecurityServices.Controllers
                 [FromQuery(Name = "size")] int size = 10
             )
         {
-            #region Validate input
-
             if (page < 1)
             {
                 return BadRequest();
@@ -45,60 +30,131 @@ namespace StarSecurityServices.Controllers
                 return BadRequest();
             }
 
-            #endregion
-
-            #region get and transform data
-
-            var employees = await Employees
+            var employees = await dbContext.Employees
                 .Skip((page - 1) * size)
                 .Take(size)
                 .ToListAsync();
 
-            return Ok(employees.Select(EmployeeDTOMapper.Map));   
-            
-            #endregion
+            return Ok(
+                employees.Select(
+                    mappers.EmployeeDTOMapper.Map
+                )
+            );
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<EmployeeDTO>>
             GetEmployeeById(string id)
         {
-            #region Validate input
             if (string.IsNullOrWhiteSpace(id))
             {
                 return BadRequest();
             }
-            #endregion
 
-            var employee = await Employees.FindAsync(id);
+            var employee = await dbContext.Employees
+                .FindAsync(id);
 
-            return employee is null
+            return employee == null
                 ? NotFound()
-                : Ok(EmployeeDTOMapper.Map(employee));
+                : Ok(
+                    mappers.EmployeeDTOMapper.Map(employee)
+                );
         }
 
         [HttpPost]
-        public async Task<ActionResult<EmployeeDTO>> CreateEmployee(
-            [FromBody] CreateEmployeeDTO request)
+        public async Task<ActionResult<EmployeeDTO>>
+            CreateEmployee(
+                [FromBody] CreateEmployeeDTO dto
+            )
         {
-            var employee = await CreateEmployeeRequestMapper.Map(request);
+            var employee = new Employee
+            {
+                Address = dto.Address,
+                Code = dto.Code,
+                ContactNumber = dto.ContactNumber,
+                DepartmentId = dto.DepartmentId,
+                EducationalQualificationId =
+                    dto.EducationalQualificationId,
+                GradeId = dto.GradeId,
+                Name = dto.Name,
+                Password = dto.DefaultPassword,
+            };
 
-            employee = (await _dbContext.AddAsync(employee)).Entity;
+            await dbContext.Employees.AddAsync(employee);
+
+            await dbContext.SaveChangesAsync();
 
             return Created(
                 $"api/employees/{employee.Id}",
-                EmployeeDTOMapper.Map(employee)
+                mappers.EmployeeDTOMapper.Map(employee)
             );
         }
 
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public async Task<ActionResult>
+            UpdateEmployee(
+                string id,
+                [FromBody] UpdateEmployeeDTO dto
+            )
         {
+            if (string.IsNullOrWhiteSpace(id))
+            {
+                return BadRequest();
+            }
+
+            if (id != dto.Id)
+            {
+                return BadRequest();
+            }
+
+            var rowsAffected = await dbContext.Employees
+                .Where(e => e.Id == dto.Id)
+                .ExecuteUpdateAsync(employee => employee
+                    .SetProperty(e => e.Address, dto.Address)
+                    .SetProperty(
+                        e => e.ContactNumber,
+                        dto.ContactNumber
+                    )
+                    .SetProperty(
+                        e => e.DepartmentId,
+                        dto.DepartmentId
+                    )
+                    .SetProperty(
+                        e => e.EducationalQualificationId,
+                        dto.EducationalQualificationId
+                    )
+                    .SetProperty(e => e.GradeId, dto.GradeId)
+                    .SetProperty(e => e.Name, dto.Name)
+                );
+
+            await dbContext.SaveChangesAsync();
+
+            return rowsAffected == 0
+                ? NotFound()
+                : NoContent();
         }
 
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async Task<ActionResult> DeleteEmployee(string id)
         {
+            if (string.IsNullOrWhiteSpace(id))
+            {
+                return BadRequest();
+            }
+
+            var employee = await dbContext.Employees
+                .FindAsync(id);
+
+            if (employee == null)
+            {
+                return NotFound(); 
+            }
+
+            dbContext.Employees.Remove(employee);
+
+            await dbContext.SaveChangesAsync();
+
+            return NoContent();
         }
     }
 }

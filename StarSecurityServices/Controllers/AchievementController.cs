@@ -7,17 +7,13 @@ using StarSecurityServices.Models;
 
 namespace StarSecurityServices.Controllers
 {
-    [ApiController]
     [Route("api/achievements")]
+    [ApiController]
     public class AchievementController(
             ApplicationDbContext dbContext,
-            Mappers mappers
-        ) : ControllerBase
+            Mappers mappers) : ControllerBase
     {
         private DbSet<Achievement> Achievements => dbContext.Achievements;
-
-        private AchievementDTO.Mapper AchievementDTOMapper
-            => mappers.AchievementDTOMapper;
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<AchievementDTO>>>
@@ -26,8 +22,6 @@ namespace StarSecurityServices.Controllers
                 [FromQuery(Name = "size")] int size = 10
             )
         {
-            #region Validate input
-
             if (page < 1)
             {
                 return BadRequest();
@@ -38,37 +32,66 @@ namespace StarSecurityServices.Controllers
                 return BadRequest();
             }
 
-            #endregion
-
             var achievements = await Achievements
                 .Skip((page - 1) * size)
+                .Take(size)
                 .ToListAsync();
 
-            return Ok(achievements.Select(AchievementDTOMapper.Map));
+            return Ok(
+                achievements.Select(
+                    mappers.AchievementDTOMapper.Map
+                )
+            );
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<AchievementDTO>>
             GetAchievementById(string id)
         {
-            #region Validate input
             if (string.IsNullOrWhiteSpace(id))
             {
                 return BadRequest();
             }
-            #endregion
 
             var achievement = await Achievements.FindAsync(id);
 
             return achievement is null
                 ? NotFound()
-                : Ok(AchievementDTOMapper.Map(achievement));
+                : Ok(
+                    mappers.AchievementDTOMapper.Map(achievement)
+                );
         }
 
         [HttpPost]
-        public void CreateAchievement(
-            [FromBody] CreateAchievementDTO request)
+        public async Task<ActionResult<AchievementDTO>>
+            CreateAchievement(
+                [FromBody] CreateAchievementDTO request
+            )
         {
+            var owner = await dbContext.Employees
+                .FindAsync(request.OwnerId);
+
+            if (owner == null)
+            {
+                return BadRequest();
+            }
+
+            var achievement = new Achievement
+            {
+                Description = request.Description,
+                Name = request.Name,
+                OwnerId = request.OwnerId,
+                Owner = owner,
+            };
+
+            await Achievements.AddAsync(achievement);
+
+            await dbContext.SaveChangesAsync();
+
+            return Created(
+                $"api/achievements/{achievement.Id}",
+                achievement
+            );
         }
     }
 }

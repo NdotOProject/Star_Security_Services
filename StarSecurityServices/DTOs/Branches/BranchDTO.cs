@@ -15,8 +15,9 @@ namespace StarSecurityServices.DTOs.Branches
         public string Name { get; set; } = string.Empty;
 
         public class Mapper
+            : AbstractMapper<Branch, BranchDTO>
         {
-            public BranchDTO Map(Branch branch)
+            public override BranchDTO Map(Branch branch)
             {
                 return new BranchDTO
                 {

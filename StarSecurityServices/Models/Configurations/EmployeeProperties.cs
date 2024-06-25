@@ -26,6 +26,9 @@ namespace StarSecurityServices.Models.Configurations
                 required: true
             );
 
+            entity.HasIndex(e => e.Code)
+                .IsUnique(true);
+
             // ContactNumber
             entity.HasStringProperty(
                 e => e.ContactNumber,
