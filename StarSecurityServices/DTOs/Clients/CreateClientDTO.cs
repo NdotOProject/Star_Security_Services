@@ -2,10 +2,8 @@
 
 namespace StarSecurityServices.DTOs.Clients
 {
-    public class ClientDTO
+    public class CreateClientDTO
     {
-        public string Id { get; set; } = string.Empty;
-
         public string Email { get; set; } = string.Empty;
 
         public string Name { get; set; } = string.Empty;
@@ -14,14 +12,13 @@ namespace StarSecurityServices.DTOs.Clients
 
         public class Mapper
         {
-            public ClientDTO Map(Client client)
+            public Client Map(CreateClientDTO dto)
             {
-                return new ClientDTO
+                return new Client
                 {
-                    Id = client.Id!,
-                    Email = client.Email,
-                    Name = client.Name,
-                    PhoneNumber = client.PhoneNumber,
+                    Email = dto.Email,
+                    Name = dto.Name,
+                    PhoneNumber = dto.PhoneNumber,
                 };
             }
         }

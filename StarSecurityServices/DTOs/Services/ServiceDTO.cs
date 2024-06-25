@@ -1,8 +1,8 @@
 ﻿using StarSecurityServices.Models;
 
-namespace StarSecurityServices.DTOs.Grades
+namespace StarSecurityServices.DTOs.Services
 {
-    public class GradeDTO
+    public class ServiceDTO
     {
         public string Id { get; set; } = string.Empty;
 
@@ -12,13 +12,13 @@ namespace StarSecurityServices.DTOs.Grades
 
         public class Mapper
         {
-            public GradeDTO Map(Grade grade)
+            public ServiceDTO Map(Service service)
             {
-                return new GradeDTO
+                return new ServiceDTO
                 {
-                    Id = grade.Id!,
-                    Description = grade.Description,
-                    Name = grade.Name,
+                    Id = service.Id!,
+                    Description = service.Description,
+                    Name = service.Name,
                 };
             }
         }

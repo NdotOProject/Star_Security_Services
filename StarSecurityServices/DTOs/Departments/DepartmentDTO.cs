@@ -20,9 +20,9 @@ namespace StarSecurityServices.DTOs.Departments
                 return new DepartmentDTO
                 {
                     Id = department.Id!,
-                    Name = department.Name,
-                    Description = department.Description,
                     Branch = branchDTOMapper.Map(department.Branch),
+                    Description = department.Description,
+                    Name = department.Name,
                 };
             }
         }

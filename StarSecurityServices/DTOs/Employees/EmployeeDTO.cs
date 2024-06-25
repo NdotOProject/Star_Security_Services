@@ -1,5 +1,6 @@
-﻿using StarSecurityServices.Context;
-using StarSecurityServices.DTOs.Departments;
+﻿using StarSecurityServices.DTOs.Departments;
+using StarSecurityServices.DTOs.EducationalQualifications;
+using StarSecurityServices.DTOs.Grades;
 using StarSecurityServices.Models;
 
 namespace StarSecurityServices.DTOs.Employees
@@ -14,30 +15,20 @@ namespace StarSecurityServices.DTOs.Employees
 
         public string ContactNumber { get; set; } = string.Empty;
 
-        //
         public DepartmentDTO Department { get; set; } = new();
 
-        //
-        public string EducationalQualificationId { get; set; } = string.Empty;
+        public EducationalQualificationDTO
+            EducationalQualification { get; set; } = new();
 
-        //
-        public string GradeId { get; set; } = string.Empty;
+        public GradeDTO Grade { get; set; } = new();
 
         public string Name { get; set; } = string.Empty;
 
-        public class Mapper
+        public class Mapper(
+            DepartmentDTO.Mapper departmentDTOMapper,
+            EducationalQualificationDTO.Mapper edDTOMapper,
+            GradeDTO.Mapper gradeDTOMapper)
         {
-            private readonly ApplicationDbContext _dbContext;
-
-            private DepartmentDTO.Mapper DepartmentDTOMapper { get; }
-
-            public Mapper(ApplicationDbContext dbContext)
-            {
-                _dbContext = dbContext;
-
-                DepartmentDTOMapper = new();
-            }
-
             public EmployeeDTO Map(Employee employee)
             {
                 return new EmployeeDTO
@@ -45,7 +36,13 @@ namespace StarSecurityServices.DTOs.Employees
                     Id = employee.Id!,
                     Address = employee.Address,
                     Code = employee.Code,
-                    Department = DepartmentDTOMapper.Map(employee.Department),
+                    ContactNumber = employee.ContactNumber,
+                    Department = departmentDTOMapper.Map(employee.Department),
+                    EducationalQualification = edDTOMapper.Map(
+                        employee.EducationalQualification
+                    ),
+                    Grade = gradeDTOMapper.Map(employee.Grade),
+                    Name = employee.Name,
                 };
             }
         }
