@@ -1,43 +1,145 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using StarSecurityServices.Context;
+using StarSecurityServices.DTOs;
+using StarSecurityServices.DTOs.Recruitments;
 using StarSecurityServices.Models;
+using StarSecurityServices.Models.Database;
 
 namespace StarSecurityServices.Controllers
 {
     [Route("api/recruitments")]
     [ApiController]
     public class RecruitmentController(
-            ApplicationDbContext dbContext
-        ) : ControllerBase
+            ApplicationDbContext dbContext,
+            Mappers mappers) : ControllerBase
     {
-        private DbSet<Recruitment> Recruitments => dbContext.Recruitments;
+        private IQueryable<Recruitment> Recruitments
+            => dbContext.Recruitments
+                .Include(r => r.Manager);
 
         [HttpGet]
-        public IEnumerable<string> GetRecruitments()
+        public async Task<ActionResult<IEnumerable<RecruitmentDTO>>>
+            GetRecruitments(
+                [FromQuery(Name = "page")] int page = 1,
+                [FromQuery(Name = "size")] int size = 10
+            )
         {
-            return new string[] { "value1", "value2" };
+            if (page < 1)
+            {
+                return BadRequest();
+            }
+
+            if (size < 1)
+            {
+                return BadRequest();
+            }
+
+            var recruitments = await Recruitments
+                .Skip((page - 1) * size)
+                .Take(size)
+                .ToListAsync();
+
+            return Ok(
+                recruitments.Select(
+                    mappers.RecruitmentDTOMapper.Map
+                )
+            );
         }
 
         [HttpGet("{id}")]
-        public string Get(int id)
+        public async Task<ActionResult<RecruitmentDTO>>
+            GetRecruitment(string id)
         {
-            return "value";
+            if (string.IsNullOrWhiteSpace(id))
+            {
+                return BadRequest();
+            }
+
+            var recruitment = Recruitments
+                .Where(r => r.Id == id);
+
+            return await recruitment.AnyAsync()
+                ? NotFound()
+                : Ok(
+                    mappers.RecruitmentDTOMapper.Map(
+                        await recruitment.FirstAsync()
+                    )
+                );
         }
 
         [HttpPost]
-        public void Post([FromBody] string value)
+        public async Task<ActionResult> CreateRecruitment(
+            [FromBody] CreateRecruitmentDTO dto)
         {
-        }
+            if (string.IsNullOrWhiteSpace(dto.Description))
+            {
+                return BadRequest();
+            }
 
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
+            if (string.IsNullOrWhiteSpace(dto.ManagerId))
+            {
+                return BadRequest();
+            }
+
+            if (string.IsNullOrWhiteSpace(dto.Title))
+            {
+                return BadRequest();
+            }
+
+            if (string.IsNullOrWhiteSpace(dto.Vacancies))
+            {
+                return BadRequest();
+            }
+
+            var manager = await dbContext.Employees
+                .FindAsync(dto.ManagerId);
+
+            if (manager == null)
+            {
+                return NotFound();
+            }
+
+            var recruitment = new Recruitment
+            {
+                Description = dto.Description,
+                Manager = manager,
+                ManagerId = manager.Id,
+                Title = dto.Title,
+                Vacancies = dto.Vacancies
+            };
+
+            await dbContext.Recruitments.AddAsync(recruitment);
+
+            await dbContext.SaveChangesAsync();
+
+            return Created(
+                $"api/recruitments/{recruitment.Id}",
+                mappers.RecruitmentDTOMapper.Map(recruitment)
+            );
         }
 
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async Task<ActionResult>
+            DeleteRecruitment(string id)
         {
+            if (string.IsNullOrWhiteSpace(id))
+            {
+                return BadRequest();
+            }
+
+            var recruitment = await dbContext.Recruitments
+                .FindAsync(id);
+
+            if (recruitment == null)
+            {
+                return NotFound();
+            }
+
+            dbContext.Recruitments.Remove(recruitment);
+
+            await dbContext.SaveChangesAsync();
+
+            return NoContent();
         }
     }
 }

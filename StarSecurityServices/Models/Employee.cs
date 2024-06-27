@@ -6,7 +6,7 @@ namespace StarSecurityServices.Models
     {
         #region Entity Properties
 
-        public string? Id { get; set; }
+        public string Id { get; set; } = string.Empty;
 
         public string Address { get; set; } = string.Empty;
 
@@ -24,6 +24,8 @@ namespace StarSecurityServices.Models
 
         public string Password { get; set; } = string.Empty;
 
+        public string RoleId { get; set; } = string.Empty;
+
         #endregion
 
         #region Relationship
@@ -40,7 +42,7 @@ namespace StarSecurityServices.Models
 
         public ICollection<Recruitment> Recruitments { get; set; } = [];
 
-        public ICollection<Role> Roles { get; set; } = [];
+        public Role Role { get; set; } = new();
 
         #endregion
     }

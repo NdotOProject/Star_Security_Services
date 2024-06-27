@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 
-namespace StarSecurityServices.Context
+namespace StarSecurityServices.Models.Database
 {
     public class ApplicationDbContextFactory
         : IDesignTimeDbContextFactory<ApplicationDbContext>
@@ -22,7 +22,7 @@ namespace StarSecurityServices.Context
             optionBuilder.UseSqlServer(
                 //"Server=DESKTOP-JO6DIGF\\SQLEXPRESS;Database=StarSecurityServices;TrustServerCertificate=True;Trusted_Connection=True;User Id=sa;Password=12345678;"
                 configuration.GetConnectionString("Default")
-            );
+            ).EnableSensitiveDataLogging(true);
 
             return new ApplicationDbContext(optionBuilder.Options);
         }

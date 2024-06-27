@@ -14,12 +14,12 @@ namespace StarSecurityServices.DTOs.Achievements
 
         private AchievementDTO(Achievement achievement)
         {
-            Id = achievement.Id!;
+            Id = achievement.Id;
             Description = achievement.Description;
             Name = achievement.Name;
             Owner = new AchievementOwner
             {
-                Id = achievement.Owner.Id!,
+                Id = achievement.Owner.Id,
                 Name = achievement.Owner.Name,
             };
         }

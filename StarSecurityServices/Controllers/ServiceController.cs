@@ -1,21 +1,21 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using StarSecurityServices.DTOs;
-using StarSecurityServices.DTOs.Clients;
+using StarSecurityServices.DTOs.Services;
 using StarSecurityServices.Models;
 using StarSecurityServices.Models.Database;
 
 namespace StarSecurityServices.Controllers
 {
+    [Route("api/services")]
     [ApiController]
-    [Route("api/clients")]
-    public class ClientController(
-        ApplicationDbContext dbContext,
-        Mappers mappers) : ControllerBase
+    public class ServiceController(
+            ApplicationDbContext dbContext,
+            Mappers mappers) : ControllerBase
     {
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ClientDTO>>>
-            GetClients(
+        public async Task<ActionResult<IEnumerable<ServiceDTO>>>
+            GetServices(
                 [FromQuery(Name = "page")] int page = 1,
                 [FromQuery(Name = "size")] int size = 10
             )
@@ -30,65 +30,64 @@ namespace StarSecurityServices.Controllers
                 return BadRequest();
             }
 
-            var clients = await dbContext.Clients
+            var services = await dbContext.Services
                 .Skip((page - 1) * size)
                 .Take(size)
                 .ToListAsync();
 
             return Ok(
-                clients.Select(
-                    mappers.ClientDTOMapper.Map
+                services.Select(
+                    mappers.ServiceDTOMapper.Map
                 )
             );
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<ClientDTO>>
-            GetClientById(string id)
+        public async Task<ActionResult<ServiceDTO>>
+            GetService(string id)
         {
             if (string.IsNullOrWhiteSpace(id))
             {
                 return BadRequest();
             }
 
-            var client = await dbContext.Clients
+            var service = await dbContext.Services
                 .FindAsync(id);
 
-            return client == null
+            return service == null
                 ? NotFound()
                 : Ok(
-                    mappers.ClientDTOMapper.Map(client)
+                    mappers.ServiceDTOMapper.Map(service)
                 );
         }
 
         [HttpPost]
-        public async Task<ActionResult<ClientDTO>>
-            CreateClient(
-                [FromBody] CreateClientDTO dto
+        public async Task<ActionResult<ServiceDTO>>
+            CreateService(
+                [FromBody] CreateServiceDTO dto
             )
         {
-            var client = new Client
+            var service = new Service
             {
-                Email = dto.Email,
+                Description = dto.Description,
                 Name = dto.Name,
-                PhoneNumber = dto.PhoneNumber,
             };
 
-            await dbContext.Clients.AddAsync(client);
-
+            await dbContext.Services.AddAsync(service);
+            
             await dbContext.SaveChangesAsync();
 
             return Created(
-                $"api/clients/{client.Id}",
-                mappers.ClientDTOMapper.Map(client)
+                $"api/services/{service.Id}",
+                mappers.ServiceDTOMapper.Map(service)
             );
         }
 
         [HttpPut("{id}")]
         public async Task<ActionResult>
-            UpdateClient(
+            UpdateService(
                 string id,
-                [FromBody] UpdateClientDTO dto
+                [FromBody] UpdateServiceDTO dto
             )
         {
             if (string.IsNullOrWhiteSpace(id))
@@ -101,15 +100,14 @@ namespace StarSecurityServices.Controllers
                 return BadRequest();
             }
 
-            var rowsAffected = await dbContext.Clients
+            var rowsAffected = await dbContext.Services
                 .Where(e => e.Id == dto.Id)
-                .ExecuteUpdateAsync(client => client
-                    .SetProperty(c => c.Email, dto.Email)
-                    .SetProperty(c => c.Name, dto.Name)
+                .ExecuteUpdateAsync(service => service
                     .SetProperty(
-                        c => c.PhoneNumber,
-                        dto.PhoneNumber
+                        s => s.Description,
+                        dto.Description
                     )
+                    .SetProperty(s => s.Name, dto.Name)
                 );
 
             await dbContext.SaveChangesAsync();
@@ -120,23 +118,22 @@ namespace StarSecurityServices.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult>
-            DeleteClient(string id)
+        public async Task<ActionResult> DeleteService(string id)
         {
             if (string.IsNullOrWhiteSpace(id))
             {
                 return BadRequest();
             }
 
-            var client = await dbContext.Clients
+            var service = await dbContext.Services
                 .FindAsync(id);
 
-            if (client == null)
+            if (service == null)
             {
-                return NotFound(); 
+                return NotFound();
             }
 
-            dbContext.Clients.Remove(client);
+            dbContext.Services.Remove(service);
 
             await dbContext.SaveChangesAsync();
 

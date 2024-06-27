@@ -14,7 +14,7 @@ namespace StarSecurityServices.Migrations
                 name: "Branches",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "NVARCHAR(50)", maxLength: 50, nullable: false),
+                    Id = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Address = table.Column<string>(type: "NVARCHAR(255)", maxLength: 255, nullable: false),
                     ContactPerson = table.Column<string>(type: "NVARCHAR(100)", maxLength: 100, nullable: false),
                     Email = table.Column<string>(type: "NVARCHAR(255)", maxLength: 255, nullable: false),
@@ -29,7 +29,7 @@ namespace StarSecurityServices.Migrations
                 name: "Clients",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "NVARCHAR(50)", maxLength: 50, nullable: false),
+                    Id = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Email = table.Column<string>(type: "NVARCHAR(255)", maxLength: 255, nullable: false),
                     Name = table.Column<string>(type: "NVARCHAR(100)", maxLength: 100, nullable: false),
                     PhoneNumber = table.Column<string>(type: "NVARCHAR(15)", maxLength: 15, nullable: false)
@@ -43,7 +43,7 @@ namespace StarSecurityServices.Migrations
                 name: "EducationalQualifications",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "NVARCHAR(50)", maxLength: 50, nullable: false),
+                    Id = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Description = table.Column<string>(type: "NVARCHAR(max)", nullable: true),
                     Name = table.Column<string>(type: "NVARCHAR(100)", maxLength: 100, nullable: false)
                 },
@@ -56,7 +56,7 @@ namespace StarSecurityServices.Migrations
                 name: "Grades",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "NVARCHAR(50)", maxLength: 50, nullable: false),
+                    Id = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Description = table.Column<string>(type: "NVARCHAR(max)", nullable: true),
                     Name = table.Column<string>(type: "NVARCHAR(100)", maxLength: 100, nullable: false)
                 },
@@ -69,7 +69,7 @@ namespace StarSecurityServices.Migrations
                 name: "Roles",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "NVARCHAR(50)", maxLength: 50, nullable: false),
+                    Id = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Description = table.Column<string>(type: "NVARCHAR(max)", nullable: true),
                     Name = table.Column<string>(type: "NVARCHAR(100)", maxLength: 100, nullable: false)
                 },
@@ -82,7 +82,7 @@ namespace StarSecurityServices.Migrations
                 name: "Services",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "NVARCHAR(50)", maxLength: 50, nullable: false),
+                    Id = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Description = table.Column<string>(type: "NVARCHAR(max)", nullable: true),
                     Name = table.Column<string>(type: "NVARCHAR(100)", maxLength: 100, nullable: false)
                 },
@@ -95,8 +95,8 @@ namespace StarSecurityServices.Migrations
                 name: "Departments",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "NVARCHAR(50)", maxLength: 50, nullable: false),
-                    BranchId = table.Column<string>(type: "NVARCHAR(50)", maxLength: 50, nullable: false),
+                    Id = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    BranchId = table.Column<string>(type: "nvarchar(50)", nullable: false),
                     Description = table.Column<string>(type: "NVARCHAR(max)", nullable: true),
                     Name = table.Column<string>(type: "NVARCHAR(100)", maxLength: 100, nullable: false)
                 },
@@ -115,8 +115,8 @@ namespace StarSecurityServices.Migrations
                 name: "Contracts",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "NVARCHAR(50)", maxLength: 50, nullable: false),
-                    ClientId = table.Column<string>(type: "NVARCHAR(50)", maxLength: 50, nullable: false)
+                    Id = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    ClientId = table.Column<string>(type: "nvarchar(50)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -133,15 +133,16 @@ namespace StarSecurityServices.Migrations
                 name: "Employees",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "NVARCHAR(50)", maxLength: 50, nullable: false),
+                    Id = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Address = table.Column<string>(type: "NVARCHAR(255)", maxLength: 255, nullable: false),
-                    Code = table.Column<string>(type: "NVARCHAR(10)", maxLength: 10, nullable: false),
+                    Code = table.Column<string>(type: "NVARCHAR(30)", maxLength: 30, nullable: false),
                     ContactNumber = table.Column<string>(type: "NVARCHAR(15)", maxLength: 15, nullable: false),
-                    DepartmentId = table.Column<string>(type: "NVARCHAR(50)", maxLength: 50, nullable: false),
-                    EducationalQualificationId = table.Column<string>(type: "NVARCHAR(50)", maxLength: 50, nullable: false),
-                    GradeId = table.Column<string>(type: "NVARCHAR(50)", maxLength: 50, nullable: false),
+                    DepartmentId = table.Column<string>(type: "nvarchar(50)", nullable: false),
+                    EducationalQualificationId = table.Column<string>(type: "nvarchar(50)", nullable: false),
+                    GradeId = table.Column<string>(type: "nvarchar(50)", nullable: false),
                     Name = table.Column<string>(type: "NVARCHAR(100)", maxLength: 100, nullable: false),
-                    Password = table.Column<string>(type: "NVARCHAR(100)", maxLength: 100, nullable: false)
+                    Password = table.Column<string>(type: "NVARCHAR(100)", maxLength: 100, nullable: false),
+                    RoleId = table.Column<string>(type: "nvarchar(50)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -164,14 +165,20 @@ namespace StarSecurityServices.Migrations
                         principalTable: "Grades",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Employees_Roles_RoleId",
+                        column: x => x.RoleId,
+                        principalTable: "Roles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
                 name: "ContractServices",
                 columns: table => new
                 {
-                    ContractId = table.Column<string>(type: "NVARCHAR(50)", nullable: false),
-                    ServiceId = table.Column<string>(type: "NVARCHAR(50)", nullable: false)
+                    ContractId = table.Column<string>(type: "nvarchar(50)", nullable: false),
+                    ServiceId = table.Column<string>(type: "nvarchar(50)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -194,10 +201,10 @@ namespace StarSecurityServices.Migrations
                 name: "Achievements",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "NVARCHAR(50)", maxLength: 50, nullable: false),
+                    Id = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Description = table.Column<string>(type: "NVARCHAR(max)", nullable: true),
                     Name = table.Column<string>(type: "NVARCHAR(100)", maxLength: 100, nullable: false),
-                    OwnerId = table.Column<string>(type: "NVARCHAR(50)", maxLength: 50, nullable: false)
+                    OwnerId = table.Column<string>(type: "nvarchar(50)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -214,8 +221,8 @@ namespace StarSecurityServices.Migrations
                 name: "EmployeeContracts",
                 columns: table => new
                 {
-                    EmployeeId = table.Column<string>(type: "NVARCHAR(50)", nullable: false),
-                    ContractId = table.Column<string>(type: "NVARCHAR(50)", nullable: false)
+                    EmployeeId = table.Column<string>(type: "nvarchar(50)", nullable: false),
+                    ContractId = table.Column<string>(type: "nvarchar(50)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -235,36 +242,12 @@ namespace StarSecurityServices.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "EmployeeRoles",
-                columns: table => new
-                {
-                    EmployeeId = table.Column<string>(type: "NVARCHAR(50)", nullable: false),
-                    RoleId = table.Column<string>(type: "NVARCHAR(50)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_EmployeeRoles", x => new { x.EmployeeId, x.RoleId });
-                    table.ForeignKey(
-                        name: "FK_EmployeeRoles_Employees_EmployeeId",
-                        column: x => x.EmployeeId,
-                        principalTable: "Employees",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_EmployeeRoles_Roles_RoleId",
-                        column: x => x.RoleId,
-                        principalTable: "Roles",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Recruitments",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "NVARCHAR(50)", maxLength: 50, nullable: false),
+                    Id = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Description = table.Column<string>(type: "NVARCHAR(max)", nullable: true),
-                    ManagerId = table.Column<string>(type: "NVARCHAR(50)", maxLength: 50, nullable: false),
+                    ManagerId = table.Column<string>(type: "nvarchar(50)", nullable: false),
                     Title = table.Column<string>(type: "NVARCHAR(100)", maxLength: 100, nullable: false),
                     Vacancies = table.Column<string>(type: "NVARCHAR(255)", maxLength: 255, nullable: false)
                 },
@@ -305,11 +288,6 @@ namespace StarSecurityServices.Migrations
                 column: "ContractId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_EmployeeRoles_RoleId",
-                table: "EmployeeRoles",
-                column: "RoleId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Employees_Code",
                 table: "Employees",
                 column: "Code",
@@ -331,6 +309,11 @@ namespace StarSecurityServices.Migrations
                 column: "GradeId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Employees_RoleId",
+                table: "Employees",
+                column: "RoleId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Recruitments_ManagerId",
                 table: "Recruitments",
                 column: "ManagerId");
@@ -349,9 +332,6 @@ namespace StarSecurityServices.Migrations
                 name: "EmployeeContracts");
 
             migrationBuilder.DropTable(
-                name: "EmployeeRoles");
-
-            migrationBuilder.DropTable(
                 name: "Recruitments");
 
             migrationBuilder.DropTable(
@@ -359,9 +339,6 @@ namespace StarSecurityServices.Migrations
 
             migrationBuilder.DropTable(
                 name: "Contracts");
-
-            migrationBuilder.DropTable(
-                name: "Roles");
 
             migrationBuilder.DropTable(
                 name: "Employees");
@@ -377,6 +354,9 @@ namespace StarSecurityServices.Migrations
 
             migrationBuilder.DropTable(
                 name: "Grades");
+
+            migrationBuilder.DropTable(
+                name: "Roles");
 
             migrationBuilder.DropTable(
                 name: "Branches");

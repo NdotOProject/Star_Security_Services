@@ -4,14 +4,14 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using StarSecurityServices.Context;
+using StarSecurityServices.Models.Database;
 
 #nullable disable
 
 namespace StarSecurityServices.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240625085707_DatabaseVer1")]
+    [Migration("20240627092309_DatabaseVer1")]
     partial class DatabaseVer1
     {
         /// <inheritdoc />
@@ -27,10 +27,10 @@ namespace StarSecurityServices.Migrations
             modelBuilder.Entity("ContractServices", b =>
                 {
                     b.Property<string>("ContractId")
-                        .HasColumnType("NVARCHAR(50)");
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("ServiceId")
-                        .HasColumnType("NVARCHAR(50)");
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("ContractId", "ServiceId");
 
@@ -42,10 +42,10 @@ namespace StarSecurityServices.Migrations
             modelBuilder.Entity("EmployeeContracts", b =>
                 {
                     b.Property<string>("EmployeeId")
-                        .HasColumnType("NVARCHAR(50)");
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("ContractId")
-                        .HasColumnType("NVARCHAR(50)");
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("EmployeeId", "ContractId");
 
@@ -54,26 +54,11 @@ namespace StarSecurityServices.Migrations
                     b.ToTable("EmployeeContracts");
                 });
 
-            modelBuilder.Entity("EmployeeRoles", b =>
-                {
-                    b.Property<string>("EmployeeId")
-                        .HasColumnType("NVARCHAR(50)");
-
-                    b.Property<string>("RoleId")
-                        .HasColumnType("NVARCHAR(50)");
-
-                    b.HasKey("EmployeeId", "RoleId");
-
-                    b.HasIndex("RoleId");
-
-                    b.ToTable("EmployeeRoles");
-                });
-
             modelBuilder.Entity("StarSecurityServices.Models.Achievement", b =>
                 {
                     b.Property<string>("Id")
                         .HasMaxLength(50)
-                        .HasColumnType("NVARCHAR");
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Description")
                         .HasColumnType("NVARCHAR(max)");
@@ -85,8 +70,7 @@ namespace StarSecurityServices.Migrations
 
                     b.Property<string>("OwnerId")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("NVARCHAR");
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
 
@@ -99,7 +83,7 @@ namespace StarSecurityServices.Migrations
                 {
                     b.Property<string>("Id")
                         .HasMaxLength(50)
-                        .HasColumnType("NVARCHAR");
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Address")
                         .IsRequired()
@@ -130,7 +114,7 @@ namespace StarSecurityServices.Migrations
                 {
                     b.Property<string>("Id")
                         .HasMaxLength(50)
-                        .HasColumnType("NVARCHAR");
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -156,12 +140,11 @@ namespace StarSecurityServices.Migrations
                 {
                     b.Property<string>("Id")
                         .HasMaxLength(50)
-                        .HasColumnType("NVARCHAR");
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("ClientId")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("NVARCHAR");
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
 
@@ -174,12 +157,11 @@ namespace StarSecurityServices.Migrations
                 {
                     b.Property<string>("Id")
                         .HasMaxLength(50)
-                        .HasColumnType("NVARCHAR");
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("BranchId")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("NVARCHAR");
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Description")
                         .HasColumnType("NVARCHAR(max)");
@@ -200,7 +182,7 @@ namespace StarSecurityServices.Migrations
                 {
                     b.Property<string>("Id")
                         .HasMaxLength(50)
-                        .HasColumnType("NVARCHAR");
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Description")
                         .HasColumnType("NVARCHAR(max)");
@@ -219,7 +201,7 @@ namespace StarSecurityServices.Migrations
                 {
                     b.Property<string>("Id")
                         .HasMaxLength(50)
-                        .HasColumnType("NVARCHAR");
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Address")
                         .IsRequired()
@@ -228,7 +210,7 @@ namespace StarSecurityServices.Migrations
 
                     b.Property<string>("Code")
                         .IsRequired()
-                        .HasMaxLength(10)
+                        .HasMaxLength(30)
                         .HasColumnType("NVARCHAR");
 
                     b.Property<string>("ContactNumber")
@@ -238,18 +220,15 @@ namespace StarSecurityServices.Migrations
 
                     b.Property<string>("DepartmentId")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("NVARCHAR");
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("EducationalQualificationId")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("NVARCHAR");
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("GradeId")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("NVARCHAR");
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -260,6 +239,10 @@ namespace StarSecurityServices.Migrations
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("NVARCHAR");
+
+                    b.Property<string>("RoleId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
 
@@ -272,6 +255,8 @@ namespace StarSecurityServices.Migrations
 
                     b.HasIndex("GradeId");
 
+                    b.HasIndex("RoleId");
+
                     b.ToTable("Employees");
                 });
 
@@ -279,7 +264,7 @@ namespace StarSecurityServices.Migrations
                 {
                     b.Property<string>("Id")
                         .HasMaxLength(50)
-                        .HasColumnType("NVARCHAR");
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Description")
                         .HasColumnType("NVARCHAR(max)");
@@ -298,15 +283,14 @@ namespace StarSecurityServices.Migrations
                 {
                     b.Property<string>("Id")
                         .HasMaxLength(50)
-                        .HasColumnType("NVARCHAR");
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Description")
                         .HasColumnType("NVARCHAR(max)");
 
                     b.Property<string>("ManagerId")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("NVARCHAR");
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -329,7 +313,7 @@ namespace StarSecurityServices.Migrations
                 {
                     b.Property<string>("Id")
                         .HasMaxLength(50)
-                        .HasColumnType("NVARCHAR");
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Description")
                         .HasColumnType("NVARCHAR(max)");
@@ -348,7 +332,7 @@ namespace StarSecurityServices.Migrations
                 {
                     b.Property<string>("Id")
                         .HasMaxLength(50)
-                        .HasColumnType("NVARCHAR");
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Description")
                         .HasColumnType("NVARCHAR(max)");
@@ -389,21 +373,6 @@ namespace StarSecurityServices.Migrations
                     b.HasOne("StarSecurityServices.Models.Employee", null)
                         .WithMany()
                         .HasForeignKey("EmployeeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("EmployeeRoles", b =>
-                {
-                    b.HasOne("StarSecurityServices.Models.Employee", null)
-                        .WithMany()
-                        .HasForeignKey("EmployeeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("StarSecurityServices.Models.Role", null)
-                        .WithMany()
-                        .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -461,11 +430,19 @@ namespace StarSecurityServices.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("StarSecurityServices.Models.Role", "Role")
+                        .WithMany("Employees")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Department");
 
                     b.Navigation("EducationalQualification");
 
                     b.Navigation("Grade");
+
+                    b.Navigation("Role");
                 });
 
             modelBuilder.Entity("StarSecurityServices.Models.Recruitment", b =>
@@ -507,6 +484,11 @@ namespace StarSecurityServices.Migrations
                 });
 
             modelBuilder.Entity("StarSecurityServices.Models.Grade", b =>
+                {
+                    b.Navigation("Employees");
+                });
+
+            modelBuilder.Entity("StarSecurityServices.Models.Role", b =>
                 {
                     b.Navigation("Employees");
                 });

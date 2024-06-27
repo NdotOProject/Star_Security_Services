@@ -6,7 +6,7 @@ namespace StarSecurityServices.Models
     {
         #region Entity Properties
 
-        public string? Id { get; set; }
+        public string Id { get; set; } = string.Empty;
 
         public string Address { get; set; } = string.Empty;
 

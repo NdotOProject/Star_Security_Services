@@ -1,13 +1,11 @@
-﻿namespace StarSecurityServices.DTOs.Departments
+﻿namespace StarSecurityServices.DTOs.Services
 {
-    public class UpdateDepartmentDTO
+    public class UpdateServiceDTO
     {
         public string Id { get; set; } = string.Empty;
 
         public string Description { get; set; } = string.Empty;
 
         public string Name { get; set; } = string.Empty;
-
-        public IEnumerable<string> EmployeeIds { get; set; } = [];
     }
 }

@@ -19,15 +19,20 @@ namespace StarSecurityServices.DTOs.Contracts
             ClientDTO.Mapper clientDTOMapper,
             EmployeeDTO.Mapper employeeDTOMapper,
             ServiceDTO.Mapper serviceDTOMapper)
+            : AbstractMapper<Contract, ContractDTO>
         {
-            public ContractDTO Map(Contract contract)
+            public override ContractDTO Map(Contract contract)
             {
                 return new ContractDTO
                 {
-                    Id = contract.Id!,
-                    Client = clientDTOMapper.Map(contract.Client),
-                    Employees = contract.Employees.Select(employeeDTOMapper.Map),
-                    Services = contract.Services.Select(serviceDTOMapper.Map)
+                    Id = contract.Id,
+                    Client = clientDTOMapper.Map(
+                        contract.Client
+                    ),
+                    Employees = contract.Employees
+                        .Select(employeeDTOMapper.Map),
+                    Services = contract.Services
+                        .Select(serviceDTOMapper.Map)
                 };
             }
         }

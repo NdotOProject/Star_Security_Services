@@ -10,13 +10,13 @@ namespace StarSecurityServices.DTOs.Services
 
         public string Name { get; set; } = string.Empty;
 
-        public class Mapper
+        public class Mapper : AbstractMapper<Service, ServiceDTO>
         {
-            public ServiceDTO Map(Service service)
+            public override ServiceDTO Map(Service service)
             {
                 return new ServiceDTO
                 {
-                    Id = service.Id!,
+                    Id = service.Id,
                     Description = service.Description,
                     Name = service.Name,
                 };

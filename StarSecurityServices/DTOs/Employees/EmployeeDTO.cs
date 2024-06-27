@@ -1,6 +1,7 @@
 ﻿using StarSecurityServices.DTOs.Departments;
 using StarSecurityServices.DTOs.EducationalQualifications;
 using StarSecurityServices.DTOs.Grades;
+using StarSecurityServices.DTOs.Roles;
 using StarSecurityServices.Models;
 
 namespace StarSecurityServices.DTOs.Employees
@@ -24,13 +25,16 @@ namespace StarSecurityServices.DTOs.Employees
 
         public string Name { get; set; } = string.Empty;
 
+        public RoleDTO Role { get; set; } = new();
+
         public class Mapper(Mappers mappers)
+            : AbstractMapper<Employee, EmployeeDTO>
         {
-            public EmployeeDTO Map(Employee employee)
+            public override EmployeeDTO Map(Employee employee)
             {
                 return new EmployeeDTO
                 {
-                    Id = employee.Id!,
+                    Id = employee.Id,
                     Address = employee.Address,
                     Code = employee.Code,
                     ContactNumber = employee.ContactNumber,
@@ -45,6 +49,7 @@ namespace StarSecurityServices.DTOs.Employees
                         employee.Grade
                     ),
                     Name = employee.Name,
+                    Role = mappers.RoleDTOMapper.Map(employee.Role),
                 };
             }
         }

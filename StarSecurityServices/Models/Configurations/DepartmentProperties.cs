@@ -12,10 +12,11 @@ namespace StarSecurityServices.Models.Configurations
             // Id
             entity.HasStringKey();
 
-            // BranchId
-            entity.HasStringPropertyIsForeignKey(
-                e => e.BranchId
-            );
+            // Branch - Department
+            entity.HasOne(d => d.Branch)
+                .WithMany(b => b.Departments)
+                .HasForeignKey(d => d.BranchId)
+                .IsRequired(true);
 
             // Description
             entity.HasStringProperty(

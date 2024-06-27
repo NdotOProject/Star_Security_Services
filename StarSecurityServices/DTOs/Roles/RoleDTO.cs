@@ -1,8 +1,8 @@
 ﻿using StarSecurityServices.Models;
 
-namespace StarSecurityServices.DTOs.Grades
+namespace StarSecurityServices.DTOs.Roles
 {
-    public class GradeDTO
+    public class RoleDTO
     {
         public string Id { get; set; } = string.Empty;
 
@@ -11,15 +11,15 @@ namespace StarSecurityServices.DTOs.Grades
         public string Name { get; set; } = string.Empty;
 
         public class Mapper
-            : AbstractMapper<Grade, GradeDTO>
+            : AbstractMapper<Role, RoleDTO>
         {
-            public override GradeDTO Map(Grade grade)
+            public override RoleDTO Map(Role o)
             {
-                return new GradeDTO
+                return new RoleDTO
                 {
-                    Id = grade.Id,
-                    Description = grade.Description,
-                    Name = grade.Name,
+                    Description = o.Description,
+                    Id = o.Id,
+                    Name = o.Name,
                 };
             }
         }

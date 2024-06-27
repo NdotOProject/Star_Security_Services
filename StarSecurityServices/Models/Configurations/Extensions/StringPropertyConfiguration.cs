@@ -38,25 +38,9 @@ namespace StarSecurityServices.Models.Configurations.Extensions
         {
             entity.HasKey(e => e.Id);
 
-            entity.HasStringProperty(
-                e => e.Id,
-                maxLength: KEY_LENGTH,
-                required: true
-            );
-
-            return entity;
-        }
-
-        public static EntityTypeBuilder<T> HasStringPropertyIsForeignKey<T>(
-            this EntityTypeBuilder<T> entity,
-            Expression<Func<T, string?>> propertyExpression)
-            where T : class
-        {
-            entity.HasStringProperty(
-                propertyExpression,
-                maxLength: KEY_LENGTH,
-                required: true
-            );
+            entity.Property(e => e.Id)
+                .HasMaxLength(KEY_LENGTH)
+                .IsRequired(true);
 
             return entity;
         }

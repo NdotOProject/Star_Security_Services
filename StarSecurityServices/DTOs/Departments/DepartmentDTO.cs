@@ -14,12 +14,14 @@ namespace StarSecurityServices.DTOs.Departments
         public string Name { get; set; } = string.Empty;
 
         public class Mapper(BranchDTO.Mapper branchDTOMapper)
+            : AbstractMapper<Department, DepartmentDTO>
         {
-            public DepartmentDTO Map(Department department)
+            public override DepartmentDTO Map(Department department)
             {
+                Console.WriteLine(department.Branch);
                 return new DepartmentDTO
                 {
-                    Id = department.Id!,
+                    Id = department.Id,
                     Branch = branchDTOMapper.Map(department.Branch),
                     Description = department.Description,
                     Name = department.Name,

@@ -1,9 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using StarSecurityServices.Models;
 using StarSecurityServices.Models.Common;
 using System.Reflection;
 
-namespace StarSecurityServices.Context
+namespace StarSecurityServices.Models.Database
 {
     public class ApplicationDbContext : DbContext
     {
@@ -18,7 +17,9 @@ namespace StarSecurityServices.Context
 
         public DbSet<Department> Departments { get; set; }
 
-        public DbSet<EducationalQualification> EducationalQualifications { get; set; }
+        public DbSet<EducationalQualification>
+            EducationalQualifications
+        { get; set; }
 
         public DbSet<Employee> Employees { get; set; }
 
@@ -33,18 +34,22 @@ namespace StarSecurityServices.Context
 
         public ApplicationDbContext() { }
 
-        public ApplicationDbContext(DbContextOptions options) : base(options)
+        public ApplicationDbContext(DbContextOptions options)
+            : base(options)
         {
         }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        protected override void OnModelCreating(
+            ModelBuilder modelBuilder)
         {
-            modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
-
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.ApplyConfigurationsFromAssembly(
+                Assembly.GetExecutingAssembly()
+            );
         }
 
-        public async Task<int> SaveChangeAsync()
+        public async Task<int> SaveChangesAsync()
         {
             foreach (var entry in ChangeTracker
                 .Entries<IStringKeyEntity>()

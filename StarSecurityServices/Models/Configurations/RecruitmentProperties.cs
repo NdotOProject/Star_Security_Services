@@ -17,11 +17,6 @@ namespace StarSecurityServices.Models.Configurations
                 e => e.Description
             );
 
-            // ManagerId
-            entity.HasStringPropertyIsForeignKey(
-                e => e.ManagerId
-            );
-
             // Title
             entity.HasStringProperty(
                 e => e.Title,

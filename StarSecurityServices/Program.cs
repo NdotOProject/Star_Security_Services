@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
-using StarSecurityServices.Context;
 using StarSecurityServices.DTOs;
+using StarSecurityServices.Models.Database;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,9 +30,13 @@ var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
-    using (var serviceScope = app.Services?.GetService<IServiceScopeFactory>()?.CreateScope())
+    using (var serviceScope = app.Services?
+            .GetService<IServiceScopeFactory>()
+            ?.CreateScope()
+        )
     {
-        var context = serviceScope?.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+        var context = serviceScope?.ServiceProvider
+            .GetRequiredService<ApplicationDbContext>();
         context?.Database.EnsureCreated();
     }
 

@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using StarSecurityServices.Context;
 using StarSecurityServices.DTOs;
 using StarSecurityServices.DTOs.Branches;
 using StarSecurityServices.Models;
+using StarSecurityServices.Models.Database;
 
 namespace StarSecurityServices.Controllers
 {

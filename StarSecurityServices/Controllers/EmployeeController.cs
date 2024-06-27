@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using StarSecurityServices.Context;
 using StarSecurityServices.DTOs;
 using StarSecurityServices.DTOs.Employees;
 using StarSecurityServices.Models;
+using StarSecurityServices.Models.Database;
 
 namespace StarSecurityServices.Controllers
 {
@@ -13,6 +13,13 @@ namespace StarSecurityServices.Controllers
             ApplicationDbContext dbContext,
             Mappers mappers) : ControllerBase
     {
+        private IQueryable<Employee> Employees
+            => dbContext.Employees
+                .Include(e => e.Department)
+                .Include(e => e.EducationalQualification)
+                .Include(e => e.Grade)
+                .Include(e => e.Role);
+
         [HttpGet]
         public async Task<ActionResult<IEnumerable<EmployeeDTO>>>
             GetEmployees(
@@ -30,7 +37,7 @@ namespace StarSecurityServices.Controllers
                 return BadRequest();
             }
 
-            var employees = await dbContext.Employees
+            var employees = await Employees
                 .Skip((page - 1) * size)
                 .Take(size)
                 .ToListAsync();
@@ -51,13 +58,15 @@ namespace StarSecurityServices.Controllers
                 return BadRequest();
             }
 
-            var employee = await dbContext.Employees
-                .FindAsync(id);
+            var employees = Employees
+                .Where(e => e.Id == id);
 
-            return employee == null
+            return await employees.AnyAsync()
                 ? NotFound()
                 : Ok(
-                    mappers.EmployeeDTOMapper.Map(employee)
+                    mappers.EmployeeDTOMapper.Map(
+                        await employees.FirstAsync()
+                    )
                 );
         }
 

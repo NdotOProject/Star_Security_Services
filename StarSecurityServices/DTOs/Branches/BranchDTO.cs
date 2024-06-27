@@ -21,7 +21,7 @@ namespace StarSecurityServices.DTOs.Branches
             {
                 return new BranchDTO
                 {
-                    Id = branch.Id!,
+                    Id = branch.Id,
                     Address = branch.Address,
                     ContactPerson = branch.ContactPerson,
                     Email = branch.Email,

@@ -6,17 +6,22 @@ using StarSecurityServices.DTOs.Departments;
 using StarSecurityServices.DTOs.EducationalQualifications;
 using StarSecurityServices.DTOs.Employees;
 using StarSecurityServices.DTOs.Grades;
+using StarSecurityServices.DTOs.Recruitments;
+using StarSecurityServices.DTOs.Roles;
 using StarSecurityServices.DTOs.Services;
 
 namespace StarSecurityServices.DTOs
 {
     public class Mappers
     {
-        public AchievementDTO.Mapper AchievementDTOMapper => new();
+        public AchievementDTO.Mapper AchievementDTOMapper
+            => new();
 
-        public BranchDTO.Mapper BranchDTOMapper => new();
+        public BranchDTO.Mapper BranchDTOMapper
+            => new();
 
-        public ClientDTO.Mapper ClientDTOMapper => new();
+        public ClientDTO.Mapper ClientDTOMapper
+            => new();
 
         public ContractDTO.Mapper ContractDTOMapper
             => new(
@@ -28,25 +33,22 @@ namespace StarSecurityServices.DTOs
         public DepartmentDTO.Mapper DepartmentDTOMapper
             => new(BranchDTOMapper);
 
-        #region EducationalQualifications
-
         public EducationalQualificationDTO.Mapper
             EducationalQualificationDTOMapper => new();
 
-        #endregion
+        public EmployeeDTO.Mapper EmployeeDTOMapper
+            => new(this);
 
-        #region Employees
+        public GradeDTO.Mapper GradeDTOMapper
+            => new();
 
-        public EmployeeDTO.Mapper EmployeeDTOMapper => new(this);
+        public RecruitmentDTO.Mapper RecruitmentDTOMapper
+            => new(EmployeeDTOMapper);
 
-        #endregion
+        public RoleDTO.Mapper RoleDTOMapper
+            => new();
 
-        #region Grades
-
-        public GradeDTO.Mapper GradeDTOMapper => new();
-
-        #endregion
-
-        public ServiceDTO.Mapper ServiceDTOMapper => new();
+        public ServiceDTO.Mapper ServiceDTOMapper
+            => new();
     }
 }

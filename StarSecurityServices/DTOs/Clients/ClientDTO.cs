@@ -19,7 +19,7 @@ namespace StarSecurityServices.DTOs.Clients
             {
                 return new ClientDTO
                 {
-                    Id = client.Id!,
+                    Id = client.Id,
                     Email = client.Email,
                     Name = client.Name,
                     PhoneNumber = client.PhoneNumber,

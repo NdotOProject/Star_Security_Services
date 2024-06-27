@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using StarSecurityServices.Context;
 using StarSecurityServices.DTOs;
 using StarSecurityServices.DTOs.Auth;
 using StarSecurityServices.DTOs.Employees;
+using StarSecurityServices.Models.Database;
 
 namespace StarSecurityServices.Controllers
 {
@@ -20,6 +20,10 @@ namespace StarSecurityServices.Controllers
             )
         {
             var employees = await dbContext.Employees
+                .Include(e => e.Department)
+                .Include(e => e.EducationalQualification)
+                .Include(e => e.Grade)
+                .Include(e => e.Role)
                 .Where(e => e.Code == request.Code)
                 .Where(e => e.Password == request.Password)
                 .ToListAsync();

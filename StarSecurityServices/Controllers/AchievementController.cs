@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using StarSecurityServices.Context;
 using StarSecurityServices.DTOs;
 using StarSecurityServices.DTOs.Achievements;
 using StarSecurityServices.Models;
+using StarSecurityServices.Models.Database;
 
 namespace StarSecurityServices.Controllers
 {
@@ -13,7 +13,9 @@ namespace StarSecurityServices.Controllers
             ApplicationDbContext dbContext,
             Mappers mappers) : ControllerBase
     {
-        private DbSet<Achievement> Achievements => dbContext.Achievements;
+        private IQueryable<Achievement> Achievements
+            => dbContext.Achievements
+                .Include(a => a.Owner);
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<AchievementDTO>>>
@@ -53,12 +55,15 @@ namespace StarSecurityServices.Controllers
                 return BadRequest();
             }
 
-            var achievement = await Achievements.FindAsync(id);
+            var achievements = Achievements
+                .Where(a => a.Id == id);
 
-            return achievement is null
+            return await achievements.AnyAsync()
                 ? NotFound()
                 : Ok(
-                    mappers.AchievementDTOMapper.Map(achievement)
+                    mappers.AchievementDTOMapper.Map(
+                        await achievements.FirstAsync()
+                    )
                 );
         }
 
@@ -84,7 +89,7 @@ namespace StarSecurityServices.Controllers
                 Owner = owner,
             };
 
-            await Achievements.AddAsync(achievement);
+            await dbContext.Achievements.AddAsync(achievement);
 
             await dbContext.SaveChangesAsync();
 

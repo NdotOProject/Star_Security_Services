@@ -10,14 +10,15 @@ namespace StarSecurityServices.DTOs.EducationalQualifications
 
         public string Name { get; set; } = string.Empty;
 
-        public class Mapper
+        public class Mapper : AbstractMapper<
+            EducationalQualification, EducationalQualificationDTO>
         {
-            public EducationalQualificationDTO Map(
+            public override EducationalQualificationDTO Map(
                 EducationalQualification educational)
             {
                 return new EducationalQualificationDTO
                 {
-                    Id = educational.Id!,
+                    Id = educational.Id,
                     Description = educational.Description,
                     Name = educational.Name,
                 };

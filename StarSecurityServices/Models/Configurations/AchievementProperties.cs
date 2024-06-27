@@ -23,11 +23,6 @@ namespace StarSecurityServices.Models.Configurations
                 maxLength: 100,
                 required: true
             );
-
-            // OwnerId
-            entity.HasStringPropertyIsForeignKey(
-                e => e.OwnerId
-            );
         }
     }
 }
