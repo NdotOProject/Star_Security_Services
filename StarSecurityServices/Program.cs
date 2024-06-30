@@ -2,7 +2,20 @@ using Microsoft.EntityFrameworkCore;
 using StarSecurityServices.DTOs;
 using StarSecurityServices.Models.Database;
 
+var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: MyAllowSpecificOrigins,
+                      policy =>
+                      {
+                          policy.AllowAnyOrigin();
+                         /* policy.WithOrigins("http://localhost:3000/",
+                                              "http://www.contoso.com");*/
+                      });
+});
 
 builder.Services.AddOptions();
 
@@ -43,6 +56,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors(MyAllowSpecificOrigins);
 
 app.UseHttpsRedirection();
 
