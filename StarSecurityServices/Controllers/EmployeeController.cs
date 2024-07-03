@@ -46,7 +46,7 @@ namespace StarSecurityServices.Controllers
             var employees = Employees
                 .Where(e => e.Id == id);
 
-            return await employees.AnyAsync()
+            return !(await employees.AnyAsync())
                 ? NotFound()
                 : Ok(
                     mappers.EmployeeDTOMapper.Map(

@@ -82,7 +82,7 @@ namespace StarSecurityServices.Controllers
             var contracts = Contracts
                 .Where(c => c.Id == id);
 
-            return await contracts.AnyAsync()
+            return !(await contracts.AnyAsync())
                 ? NotFound()
                 : Ok(
                     mappers.ContractDTOMapper.Map(

@@ -44,7 +44,7 @@ namespace StarSecurityServices.Controllers
             var achievements = Achievements
                 .Where(a => a.Id == id);
 
-            return await achievements.AnyAsync()
+            return !(await achievements.AnyAsync())
                 ? NotFound()
                 : Ok(
                     mappers.AchievementDTOMapper.Map(

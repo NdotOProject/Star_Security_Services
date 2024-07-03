@@ -43,7 +43,7 @@ namespace StarSecurityServices.Controllers
             var recruitment = Recruitments
                 .Where(r => r.Id == id);
 
-            return await recruitment.AnyAsync()
+            return !(await recruitment.AnyAsync())
                 ? NotFound()
                 : Ok(
                     mappers.RecruitmentDTOMapper.Map(
