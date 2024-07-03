@@ -15,24 +15,9 @@ namespace StarSecurityServices.Controllers
     {
         [HttpGet]
         public async Task<ActionResult<IEnumerable<BranchDTO>>>
-            GetBranches(
-                [FromQuery(Name = "page")] int page = 1,
-                [FromQuery(Name = "size")] int size = 10
-            )
+            GetBranches()
         {
-            if (page < 1)
-            {
-                return BadRequest();
-            }
-
-            if (size < 1)
-            {
-                return BadRequest();
-            }
-
             var branches = await dbContext.Branches
-                .Skip((page - 1) * size)
-                .Take(size)
                 .ToListAsync();
 
             return Ok(

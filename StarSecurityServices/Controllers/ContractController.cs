@@ -23,25 +23,10 @@ namespace StarSecurityServices.Controllers
         [HttpGet("~/api/clients/{clientId}/contracts")]
         public async Task<ActionResult<IEnumerable<ContractDTO>>>
             GetClientContracts(
-                string clientId,
-                [FromQuery(Name = "page")] int page = 1,
-                [FromQuery(Name = "size")] int size = 10
-            )
+                string clientId)
         {
-            if (page < 1)
-            {
-                return BadRequest();
-            }
-
-            if (size < 1)
-            {
-                return BadRequest();
-            }
-
             var contracts = await Contracts
                 .Where(c => c.ClientId == clientId)
-                .Skip((page - 1) * size)
-                .Take(size)
                 .ToListAsync();
             
             return Ok(

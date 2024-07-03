@@ -17,26 +17,12 @@ namespace StarSecurityServices.Controllers
             => dbContext.Achievements
                 .Include(a => a.Owner);
 
-        [HttpGet]
+        [HttpGet("~/api/employees/{id}/achievements")]
         public async Task<ActionResult<IEnumerable<AchievementDTO>>>
-            GetAchievements(
-                [FromQuery(Name = "page")] int page = 1,
-                [FromQuery(Name = "size")] int size = 10
-            )
+            GetAchievements(string id)
         {
-            if (page < 1)
-            {
-                return BadRequest();
-            }
-
-            if (size < 1)
-            {
-                return BadRequest();
-            }
-
             var achievements = await Achievements
-                .Skip((page - 1) * size)
-                .Take(size)
+                .Where(a => a.OwnerId == id)
                 .ToListAsync();
 
             return Ok(

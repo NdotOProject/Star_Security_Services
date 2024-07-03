@@ -21,26 +21,10 @@ namespace StarSecurityServices.Controllers
         [HttpGet]
         [Route("~/api/branches/{branchId}/departments")]
         public async Task<ActionResult<IEnumerable<DepartmentDTO>>>
-            GetDepartments(
-                string branchId,
-                [FromQuery(Name = "page")] int page = 1,
-                [FromQuery(Name = "size")] int size = 10
-            )
+            GetDepartments(string branchId)
         {
-            if (page < 1)
-            {
-                return BadRequest();
-            }
-
-            if (size < 1)
-            {
-                return BadRequest();
-            }
-
             var departments = await Departments
                 .Where(d => d.BranchId == branchId)
-                .Skip((page - 1) * size)
-                .Take(size)
                 .ToListAsync();
 
             return Ok(
