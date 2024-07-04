@@ -15,7 +15,7 @@ namespace StarSecurityServices.Controllers
     {
         private IQueryable<Employee> Employees
             => dbContext.Employees
-                .Include(e => e.Department)
+                .Include(e => e.Department.Branch)
                 .Include(e => e.EducationalQualification)
                 .Include(e => e.Grade)
                 .Include(e => e.Role);
@@ -61,16 +61,54 @@ namespace StarSecurityServices.Controllers
                 [FromBody] CreateEmployeeDTO dto
             )
         {
+            var department = await dbContext.Departments
+                .FindAsync(dto.DepartmentId);
+
+            if (department == null)
+            {
+                return BadRequest();
+            }
+
+            var educationalQualification = await dbContext
+                .EducationalQualifications
+                .FindAsync(dto.EducationalQualificationId);
+
+            if (educationalQualification == null)
+            {
+                return BadRequest();
+            }
+
+            var grade = await dbContext.Grades
+                .FindAsync(dto.GradeId);
+
+            if (grade == null)
+            {
+                return BadRequest();
+            }
+
+            var role = await dbContext.Roles
+                .FindAsync(dto.RoleId);
+
+            if (role == null)
+            {
+                return BadRequest();
+            }
+
             var employee = new Employee
             {
                 Address = dto.Address,
                 Code = dto.Code,
                 ContactNumber = dto.ContactNumber,
-                DepartmentId = dto.DepartmentId,
+                Department = department,
+                DepartmentId = department.Id,
+                EducationalQualification= educationalQualification,
                 EducationalQualificationId =
-                    dto.EducationalQualificationId,
-                GradeId = dto.GradeId,
+                    educationalQualification.Id,
+                Grade = grade,
+                GradeId = grade.Id,
                 Name = dto.Name,
+                Role = role,
+                RoleId = role.Id,
                 Password = dto.DefaultPassword,
             };
 
@@ -119,6 +157,7 @@ namespace StarSecurityServices.Controllers
                     )
                     .SetProperty(e => e.GradeId, dto.GradeId)
                     .SetProperty(e => e.Name, dto.Name)
+                    .SetProperty(e => e.RoleId, dto.RoleId)
                 );
 
             await dbContext.SaveChangesAsync();

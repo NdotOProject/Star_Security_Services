@@ -71,8 +71,8 @@ namespace StarSecurityServices.Controllers
             {
                 Description = request.Description,
                 Name = request.Name,
-                OwnerId = request.OwnerId,
                 Owner = owner,
+                OwnerId = owner.Id,
             };
 
             await dbContext.Achievements.AddAsync(achievement);
@@ -81,7 +81,7 @@ namespace StarSecurityServices.Controllers
 
             return Created(
                 $"api/achievements/{achievement.Id}",
-                achievement
+                mappers.AchievementDTOMapper.Map(achievement)
             );
         }
     }

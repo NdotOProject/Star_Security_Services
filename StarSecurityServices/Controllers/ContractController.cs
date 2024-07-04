@@ -2,6 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using StarSecurityServices.DTOs;
 using StarSecurityServices.DTOs.Contracts;
+using StarSecurityServices.DTOs.Employees;
+using StarSecurityServices.DTOs.Services;
 using StarSecurityServices.Models;
 using StarSecurityServices.Models.Database;
 
@@ -19,16 +21,13 @@ namespace StarSecurityServices.Controllers
                 .Include(c => c.Employees)
                 .Include(c => c.Services);
 
-
-        [HttpGet("~/api/clients/{clientId}/contracts")]
+        [HttpGet("~/api/contracts")]
         public async Task<ActionResult<IEnumerable<ContractDTO>>>
-            GetClientContracts(
-                string clientId)
+            GetContracts()
         {
             var contracts = await Contracts
-                .Where(c => c.ClientId == clientId)
                 .ToListAsync();
-            
+
             return Ok(
                 contracts.Select(
                     mappers.ContractDTOMapper.Map
@@ -36,31 +35,46 @@ namespace StarSecurityServices.Controllers
             );
         }
 
+        [HttpGet("{id}/employees")]
+        public async Task<ActionResult<IEnumerable<EmployeeDTO>>>
+            GetContractEmployees(string id)
+        {
+            var contract = await Contracts
+                .Where(c => c.Id == id)
+                .FirstAsync();
+            
+            return Ok(
+                contract.Employees.Select(
+                    mappers.EmployeeDTOMapper.Map
+                )
+            );
+        }
+
+
+        [HttpGet("{id}/services")]
+        public async Task<ActionResult<IEnumerable<ServiceDTO>>>
+            GetContractServices(string id)
+        {
+            var contract = await Contracts
+                .Where(c => c.Id == id)
+                .FirstAsync();
+
+            return Ok(
+                contract.Services.Select(
+                    mappers.ServiceDTOMapper.Map
+                )
+            );
+        }
+
         [HttpGet("~/api/employees/{employeeId}/contracts")]
         public async Task<ActionResult<IEnumerable<ContractDTO>>>
-            GetEmployeeContracts(
-                string employeeId,
-                [FromQuery(Name = "page")] int page = 1,
-                [FromQuery(Name = "size")] int size = 10
-            )
+            GetEmployeeContracts(string employeeId)
         {
-            if (page < 1)
-            {
-                return BadRequest();
-            }
-
-            if (size < 1)
-            {
-                return BadRequest();
-            }
-
             var contracts = await Contracts
                 .Where(c => c.Employees
                     .Select(e => e.Id)
                     .Contains(employeeId)
                 )
-                .Skip((page - 1) * size)
-                .Take(size)
                 .ToListAsync();
 
             return Ok(
